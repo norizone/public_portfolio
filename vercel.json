@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/article",
+      "dest": "/api/article.js"
+    },
+    {
+      "src": "/api/list",
+      "dest": "/api/list.js"
+    },
+    {
+      "src": "/api/nextPage",
+      "dest": "/api/nextPage.js"
+    },
+    {
+      "src": "/api/firstPage",
+      "dest": "/api/firstPage.js"
+    }
+  ],
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "nuxt.config.js",
+      "use": "@nuxtjs/vercel-builder",
+      "config": {
+        "serverFiles": ["package.json", "api/**"]
+      }
+    }
+  ]
+}

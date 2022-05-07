@@ -1,0 +1,84 @@
+@use "sass:math";
+
+// functionを定義するscssファイル
+// remの値を出す 16で割って px指定と同じサイズにする
+@function rem($value) {
+  @return #{math.div($value, 16)}rem;
+}
+
+// vw vh の値を出す（指定したい最大幅,物のサイズ）
+// モバイルで使う
+@function vw($width, $px) {
+  @return math.div($px, $width) * 100vw;
+}
+@function vh($height, $px) {
+  @return math.div($px, $height) * 100vh;
+}
+@function p($width, $px) {
+  @return math.div($px, $width) * 100%;
+}
+
+//line_height 行送り
+@function lh($fontSize, $lineHeight) {
+  @return math.div($lineHeight, $fontSize);
+}
+
+// letter-spacing トラッキング
+@function ls($letter-spacing) {
+  @return #{math.div($letter-spacing, 1000)}em;
+}
+
+//z-index
+$z-map: (pulldown, pagetop, nav, header);
+@function z($name) {
+  @return index($z-map, $name);
+}
+@mixin media($breakpoint) {
+  @media #{map-get($breakpoints,$breakpoint)} {
+    @content;
+    //外側を呼び出すためのcontent
+  }
+}
+
+//縦横比レスポンシブ 呼び出し@include aspect-ratio(16, 9);
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+
+  &::before {
+    content: "";
+    float: left;
+    padding-top: math.div($height, $width) * 100%;
+  }
+
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  & > :first-child {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+  }
+}
+
+// @include media('sm'){} 呼び出し方
+
+$breakpoints: (
+  s: "only screen and (min-width:480px)",
+  sm: "only screen and (min-width:576px)",
+  md: "only screen and (min-width:768px)",
+  lg: "only screen and (min-width:992px)",
+  xl: "only screen and (min-width:1200px)",
+  xxl: "only screen and (min-width:1400px)",
+);
+
+@mixin media($breakpoint) {
+  @media #{map-get($breakpoints,$breakpoint)} {
+    @content;
+    //外側を呼び出すためのcontent
+  }
+}
